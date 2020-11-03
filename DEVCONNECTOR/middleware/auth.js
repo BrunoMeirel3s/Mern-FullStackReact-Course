@@ -23,7 +23,7 @@ module.exports = function (req, res, next) {
 
     /**
      * we're passing to our request the object user after it has been decoded above, and as bellow we're calling next()
-     * it means that we're calling the next function, and in the moment that auth document be called it will pass the objet user
+     * it means that we're calling the next function, and in the moment that auth document is called it will pass the objet user
      * as a request
      */
     req.user = decoded.user;
