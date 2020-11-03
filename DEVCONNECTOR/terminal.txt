@@ -1,0 +1,8 @@
+-- Initialise the package.json
+- npm init
+
+--install the dependecies that we'll need during the course
+- npm i express express-validator bcryptjs config gravatar jsonwebtoken mongoose request
+
+--Install the dev dependecies, that are the ones that we'll only use during developement
+- npm i -D nodemon concurrently
