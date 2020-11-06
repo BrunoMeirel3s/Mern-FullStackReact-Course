@@ -179,4 +179,193 @@ router.get("/user/:user_id", async (req, res) => {
   }
 });
 
+// @route  Delete api/profile
+// @desc   Delete profile, user & posts
+// @access Private
+router.delete("/", auth, async (req, res) => {
+  try {
+    //@todo - remove users posts
+
+    //remove provile - we're searching the user in our database by it's id sent by the auth middleware
+    await Profile.findOneAndRemove({ user: req.user.id });
+
+    //remove user - - we're searching the user in our database by it's id sent by the auth middleware
+    await User.findOneAndRemove({ _id: req.user.id });
+
+    res.json({ msg: "User deleted" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route  Put api/profile/experience
+// @desc   Add profile experience
+// @access Private
+router.put(
+  "/experience",
+  [
+    auth,
+    [
+      check("title", "Title is required").not().isEmpty(),
+      check("company", "Company is required").not().isEmpty(),
+      check("from", "From date is required").not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    //if one of the atributes above don't come from the frontend the user will receive a error
+    const erros = validationResult(req);
+    if (!erros.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    //we're destructuring the attributes bellow from the req.body that is the values sent by the frontEnd
+    const {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description,
+    } = req.body;
+
+    //here we're creating a new object using the attributes destructured above
+    //this new object contains the values sent by the user
+    const newExp = {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    try {
+      //searching for the user profile using it's id sent by the auth method
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      //the unshift method add the new experience in the experience object begin
+      profile.experience.unshift(newExp);
+
+      //save() is used for update the value experience with the values above
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// @route  Delete api/profile/experience/:exp_id
+// @desc   Delete experience from profile
+// @access Private
+router.delete("/experience/:exp_id", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    //Get remove index
+    const removeIndex = profile.experience
+      .map((item) => item.id)
+      .indexOf(req.params.exp_id);
+
+    profile.experience.splice(removeIndex, 1);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route  Put api/profile/education
+// @desc   Add profile education
+// @access Private
+router.put(
+  "/education",
+  [
+    auth,
+    [
+      check("school", "School is required").not().isEmpty(),
+      check("degree", "degree is required").not().isEmpty(),
+      check("fieldofstudy", "Field of study is required").not().isEmpty(),
+      check("from", "From date is required").not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    //if one of the atributes above don't come from the frontend the user will receive a error
+    const erros = validationResult(req);
+    if (!erros.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    //we're destructuring the attributes bellow from the req.body that is the values sent by the frontEnd
+    const {
+      school,
+      degree,
+      fieldofstudy,
+      from,
+      to,
+      current,
+      description,
+    } = req.body;
+
+    //here we're creating a new object using the attributes destructured above
+    //this new object contains the values sent by the user
+    const newEdu = {
+      school,
+      degree,
+      fieldofstudy,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    try {
+      //searching for the user profile using it's id sent by the auth method
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      //the unshift method add the new experience in the experience object begin
+      profile.education.unshift(newEdu);
+
+      //save() is used for update the value experience with the values above
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// @route  Delete api/profile/education/:edu_id
+// @desc   Delete education from profile
+// @access Private
+router.delete("/education/:edu_id", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    //Get remove index
+    const removeIndex = profile.education
+      .map((item) => item.id)
+      .indexOf(req.params.edu_id);
+
+    profile.education.splice(removeIndex, 1);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
