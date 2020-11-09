@@ -1,4 +1,4 @@
-//this document will be used to verifie if the user has a valid token
+//this document will be used to verify if the user has a valid token
 
 const jwt = require("jsonwebtoken"); //responsible for generate our webtoken
 const config = require("config"); //responsible for call variables for other documents

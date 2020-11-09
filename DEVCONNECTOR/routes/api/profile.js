@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const request = require("request"); //method used for make request for apis
+const config = require("config"); //allow us to use variables created in other documents such as the githubClient and secret that we're going to use in github api
 const auth = require("../../middleware/auth"); //auth method responsible for check if the user has a valid token
 const Profile = require("../../models/Profile"); //Model profile that can be used for search and insert data in our database
 const User = require("../../models/User"); //Model user that can be used for search and insert data in our database
@@ -265,15 +267,22 @@ router.put(
 // @access Private
 router.delete("/experience/:exp_id", auth, async (req, res) => {
   try {
+    //he're we are selecting one profile usign the user.id that was sent by auth method
     const profile = await Profile.findOne({ user: req.user.id });
 
     //Get remove index
+    /**
+     * removeIndex search in the array the attibute with the index similar to
+     * req.params.exp_id that is the id sent by the url
+     */
     const removeIndex = profile.experience
       .map((item) => item.id)
       .indexOf(req.params.exp_id);
 
+    //we're removing the removeIndex that is the value selected by the frontEnd
     profile.experience.splice(removeIndex, 1);
 
+    //saving the delete in our database
     await profile.save();
 
     res.json(profile);
@@ -334,7 +343,7 @@ router.put(
       //the unshift method add the new experience in the experience object begin
       profile.education.unshift(newEdu);
 
-      //save() is used for update the value experience with the values above
+      //save() is used for update the value profile with the values above
       await profile.save();
 
       res.json(profile);
@@ -353,15 +362,65 @@ router.delete("/education/:edu_id", auth, async (req, res) => {
     const profile = await Profile.findOne({ user: req.user.id });
 
     //Get remove index
+    /**
+     * removeIndex search in the array the attibute with the index similar to
+     * req.params.exp_id that is the id sent by the url
+     */
     const removeIndex = profile.education
       .map((item) => item.id)
       .indexOf(req.params.edu_id);
 
+    //we're removing the value selected in our frontEnd
     profile.education.splice(removeIndex, 1);
 
+    //saving the education update
     await profile.save();
 
     res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route  Get api/profile/github/:username
+// @desc   Get user repos from github
+// @access Public
+router.get("/github/:username", (req, res) => {
+  try {
+    /**
+     * the const options is used to define the url, method and headers that we're going to use to access
+     * github api, the uri contains 'req.params.username' that is the username that we want to see the repositories
+     * the 'githubClientId' is the value that we get in github when we create an aplication for use their api,
+     * the 'githubsecret' is also a value the we get in github, these two values are necessary to access the github api
+     */
+    const options = {
+      uri: `https://api.github.com/users/${
+        req.params.username
+      }/repos?per_page=5&sort=created:asc&client_id=${config.get(
+        "githubClientId"
+      )}&client_secret=${config.get("githubSecret")}`,
+      method: "GET",
+      headers: { "user-agent": "node.js" },
+    };
+
+    /*
+     *we're using the request method that allow us to access diferent apis, the options value is the
+     *const that we defined above. Error, response and body are both the kind of responses that we can obtain
+     *from the api request
+     */
+    request(options, (error, response, body) => {
+      //if error we're going to send the error on a console
+      if (error) console.error(error);
+
+      //if statuscode is diferent of 200 it means that we can't find the url sent
+      if (response.statusCode !== 200) {
+        return res.status(404).json({ msg: "No Github profile found" });
+      }
+
+      //json.parse is used to format the response that we receive from github api
+      res.json(JSON.parse(body));
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
