@@ -88,7 +88,7 @@ router.post(
     if (status) profileFields.status = status;
     if (githubusername) profileFields.githubusername = githubusername;
     /**
-     * the skills value is received from the frontEnd as a String,
+     * the skills values are received from the frontEnd as a String,
      * this way we have to split it by ',' and use the map to see all the
      * values and the trim method to remove any white space in the values
      */
