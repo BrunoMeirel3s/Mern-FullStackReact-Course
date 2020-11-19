@@ -6,3 +6,9 @@
 
 --Install the dev dependecies, that are the ones that we'll only use during developement
 - npm i -D nodemon concurrently
+
+
+--Criação do react-app
+-- npx create-react-app client
+-- cd client
+-- npm i axios react-router-dom redux react-redux redux-thunk redux-devtools-extension moment react-moment
