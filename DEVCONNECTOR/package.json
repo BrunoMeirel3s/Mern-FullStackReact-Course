@@ -6,7 +6,7 @@
   "scripts": {
     "star": "node server",
     "server": "nodemon server",
-    "client":"npm start --prefix client",
+    "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Bruno Meireles",
@@ -19,6 +19,7 @@
     "gravatar": "^1.8.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.11",
+    "redux": "^4.0.5",
     "request": "^2.88.2"
   },
   "devDependencies": {

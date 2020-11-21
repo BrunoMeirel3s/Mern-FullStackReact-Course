@@ -5,21 +5,26 @@ import Landing from "./components/layout/Landing"; //Component that will be call
 import Register from "./components/auth/Register"; //Component that will be call in our aplication
 import Login from "./components/auth/Login"; //Component that will be call in our aplication
 import "./App.css";
+//Redux
+import { Provider } from "react-redux"; //Provider allow-us to use the store component
+import store from "./store"; //Store will be used to cope with all the actions of our project
 
 const App = () => {
   return (
-    <Router>
-      <Fragment>
-        <Navbar />
-        <Route exact path="/" component={Landing} />
-        <section className="container">
-          <Switch>
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-          </Switch>
-        </section>
-      </Fragment>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Fragment>
+          <Navbar />
+          <Route exact path="/" component={Landing} />
+          <section className="container">
+            <Switch>
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+            </Switch>
+          </section>
+        </Fragment>
+      </Router>
+    </Provider>
   );
 };
 
