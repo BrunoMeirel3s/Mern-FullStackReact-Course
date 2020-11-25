@@ -1,5 +1,6 @@
 /**
- * The store is responsible to gather all states of our components
+ * The store is responsible to gather all states of our components,
+ usually we only have to build it one time
  */
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";

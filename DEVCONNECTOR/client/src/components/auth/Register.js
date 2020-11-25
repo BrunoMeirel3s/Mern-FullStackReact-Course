@@ -2,13 +2,14 @@ import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux"; //allow-us to connect this component to redux
 import { setAlert } from "../../actions/alert"; //action that w're going to use to cope with the erros
+import { register } from "../../actions/auth";
 import PropTypes from "prop-types";
 
 /**
  * Register will contain the values and method setFormData that
  * will insert the values sent by the frontEnd in the values bellow
  */
-const Register = ({ setAlert }) => {
+const Register = ({ setAlert, register }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -40,7 +41,7 @@ const Register = ({ setAlert }) => {
     if (password !== password2) {
       setAlert("Passwords do not match", "danger");
     } else {
-      console.log("SUCCESS");
+      register({ name, email, password });
     }
   };
 
@@ -109,10 +110,11 @@ const Register = ({ setAlert }) => {
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
 };
 /**
  * The connect method here is responsible for call the actions that we're
  * using in this component, after call it here we can use the
  * props.setAlert
  */
-export default connect(null, { setAlert })(Register);
+export default connect(null, { setAlert, register })(Register);
