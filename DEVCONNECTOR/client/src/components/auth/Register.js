@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux"; //allow-us to connect this component to redux
 import { setAlert } from "../../actions/alert"; //action that w're going to use to cope with the erros
 import { register } from "../../actions/auth";
@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
  * Register will contain the values and method setFormData that
  * will insert the values sent by the frontEnd in the values bellow
  */
-const Register = ({ setAlert, register }) => {
+const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -45,6 +45,9 @@ const Register = ({ setAlert, register }) => {
     }
   };
 
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
   return (
     <Fragment>
       <h1 className="large text-primary">Sign Up</h1>
@@ -111,10 +114,16 @@ const Register = ({ setAlert, register }) => {
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
 };
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
 /**
  * The connect method here is responsible for call the actions that we're
  * using in this component, after call it here we can use the
  * props.setAlert
  */
-export default connect(null, { setAlert, register })(Register);
+export default connect(mapStateToProps, { setAlert, register })(Register);
