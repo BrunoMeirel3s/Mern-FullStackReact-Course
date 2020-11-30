@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux"; //allow-us to connect this component to redux
 import { setAlert } from "../../actions/alert"; //action that w're going to use to cope with the erros
-import { register } from "../../actions/auth";
+import { register } from "../../actions/auth"; //allow us to use the register method in our auth reducer
 import PropTypes from "prop-types";
 
 /**
@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
  * will insert the values sent by the frontEnd in the values bellow
  */
 const Register = ({ setAlert, register, isAuthenticated }) => {
+  //formData has the values that will be filled in our frontEnd
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -38,9 +39,11 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
    */
   const onSubmit = async (e) => {
     e.preventDefault();
+    //if the passwords don't match we're going to show a alert to our user
     if (password !== password2) {
       setAlert("Passwords do not match", "danger");
     } else {
+      //register will call the register method passing name, email and password as a parameter
       register({ name, email, password });
     }
   };
