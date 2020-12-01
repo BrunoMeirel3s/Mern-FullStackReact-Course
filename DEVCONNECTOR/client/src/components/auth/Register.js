@@ -48,6 +48,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     }
   };
 
+  //Redirect if logged in
   if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
@@ -114,19 +115,28 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   );
 };
 
+/**
+ * Register.propTypes receive all the actions that we're connecting with
+ * this component such as setAlert, register and the isAthenticated verify
+ */
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
 };
 
+/**
+ * mapStateToProps is used here to call isAuthenticated from the auth reducer
+ * this way we can validate if the user is currently logged in
+ */
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 
 /**
- * The connect method here is responsible for call the actions that we're
+ * The connect method here is responsible to call the actions that we're
  * using in this component, after call it here we can use the
- * props.setAlert
+ * props.setAlert, mapStateToProps is used here to call the states of other
+ * reducers
  */
 export default connect(mapStateToProps, { setAlert, register })(Register);

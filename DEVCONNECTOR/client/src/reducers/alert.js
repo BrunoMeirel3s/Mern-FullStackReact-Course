@@ -10,7 +10,9 @@ export default function (state = initialState, action) {
   const { type, payload } = action;
   /**
    * if type is equal to SET_ALERT we're going to pass the payload values
-   * to initialState
+   * to initialState. REMOVE_ALERT will be responsible to make a filter
+   * in our alert and make visible only the alerts id that are different of
+   * the actual alert id sent via payload
    **/
   switch (type) {
     case SET_ALERT:
