@@ -5,6 +5,8 @@ import Landing from "./components/layout/Landing"; //Component that will be call
 import Register from "./components/auth/Register"; //Component that will be call in our aplication
 import Login from "./components/auth/Login"; //Component that will be call in our aplication
 import Alert from "./components/layout/Alert";
+import DashBoard from "./components/dashboard/Dashboard";
+import PrivateRoute from "./components/routing/PrivateRoute";
 import "./App.css";
 //Redux
 import { Provider } from "react-redux"; //Provider allow-us to use the store component
@@ -31,6 +33,7 @@ const App = () => {
             <Switch>
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <PrivateRoute exact path="/dashboard" component={DashBoard} />
             </Switch>
           </section>
         </Fragment>

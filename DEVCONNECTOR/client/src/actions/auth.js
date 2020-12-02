@@ -6,6 +6,7 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  LOGOUT,
 } from "./types"; //Types that we're going to use to make the actions happen with the reducers
 import { setAlert } from "./alert"; //used to make visible the alerts in our frontEnd
 import setAuthToken from "../utils/setAuthToken"; //used to add the token to the header of our axios requests
@@ -129,4 +130,9 @@ export const login = (email, password) => async (dispatch) => {
       type: LOGIN_FAIL,
     });
   }
+};
+
+//Logout / Clear Profile
+export const logout = () => (dispatch) => {
+  dispatch({ type: LOGOUT });
 };
