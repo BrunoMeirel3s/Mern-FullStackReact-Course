@@ -9,6 +9,12 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const authLinks = (
     <ul>
       <li>
+        <i className="fas fa-user" />
+        <Link to="/dashboard">
+          <span className="hide-sm">Dashboard</span>
+        </Link>
+      </li>
+      <li>
         <a onClick={logout} to="!#">
           <i className="fas fa-sign-out-alt"></i>{" "}
           <span className="hide-sm">Logout</span>
@@ -52,7 +58,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
  * Register.propTypes receive all the actions that we're connecting with
  * this component such as logout and auth
  */
-Navbar.PropTypes = {
+Navbar.propTypes = {
   logout: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
