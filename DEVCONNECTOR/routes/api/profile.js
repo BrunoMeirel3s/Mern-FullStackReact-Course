@@ -5,6 +5,7 @@ const config = require("config"); //allow us to use variables created in other d
 const auth = require("../../middleware/auth"); //auth method responsible for check if the user has a valid token
 const Profile = require("../../models/Profile"); //Model profile that can be used for search and insert data in our database
 const User = require("../../models/User"); //Model user that can be used for search and insert data in our database
+const Post = require("../../models/Post");
 const { check, validationResult } = require("express-validator/check");
 
 // @route  GET api/profile/me
@@ -186,7 +187,8 @@ router.get("/user/:user_id", async (req, res) => {
 // @access Private
 router.delete("/", auth, async (req, res) => {
   try {
-    //@todo - remove users posts
+    //Remove user posts
+    await Post.deleteMany({ user: req.user.id });
 
     //remove provile - we're searching the user in our database by it's id sent by the auth middleware
     await Profile.findOneAndRemove({ user: req.user.id });
