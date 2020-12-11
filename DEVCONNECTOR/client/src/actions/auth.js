@@ -95,7 +95,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
 
 /**
  * login will be used to log in the user in our application,
- * for this login receive email and password as parameters
+ * for this login receives email and password as parameters
  */
 export const login = (email, password) => async (dispatch) => {
   const config = {
@@ -129,7 +129,7 @@ export const login = (email, password) => async (dispatch) => {
     }
 
     dispatch({
-      type: LOGIN_FAIL
+      type: LOGIN_FAIL,
     });
   }
 };
