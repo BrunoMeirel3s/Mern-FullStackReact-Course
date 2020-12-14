@@ -157,7 +157,7 @@ router.get("/", async (req, res) => {
 // @route  GET api/profile/user/:user_id
 // @desc   Get profile by user ID
 // @access Public
-router.get("/user/:user_id", async (req, res) => {
+router.get("/:user_id", async (req, res) => {
   /**
    * try bellow is used for list a user profile according the id sent in our url
    * it will take the user_id from the url and then find in our database the information

@@ -21,7 +21,7 @@ const Dashboard = ({
    */
   useEffect(() => {
     getCurrentProfile();
-  }, []);
+  }, [getCurrentProfile]);
   /**
    * Return will check if loading and profile states are stil null
    * then it will display the loading component, the "Spinner",

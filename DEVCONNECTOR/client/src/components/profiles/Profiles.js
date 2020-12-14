@@ -15,7 +15,7 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
   //useEffect is used to call getProfiles as soon as the component Profile is loaded
   useEffect(() => {
     getProfiles();
-  }, []);
+  }, [getProfiles]);
   return (
     <Fragment>
       {loading ? (
