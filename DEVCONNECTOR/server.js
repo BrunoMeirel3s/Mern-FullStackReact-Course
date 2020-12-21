@@ -36,14 +36,14 @@ app.use("/api/posts", require("./routes/api/posts"));
 //Serve static assets in production
 
 //Set static folder
-app.use(express.static("client/build"));
+//app.use(express.static("client/build"));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(_dirname, "client", "build", "index.html"));
-});
+//app.get("*", (req, res) => {
+  //res.sendFile(path.resolve(_dirname, "client", "build", "index.html"));
+//});
 
 //this is the port where our serve is going to send data and listen
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 //initialize our server listenning on port 5000
 app.listen(PORT, () => {
